@@ -7,7 +7,7 @@ public class MNode {
 	private int x, y;
 	private int width, height;
 	private String text;
-	private String color;
+	private String color = "07AVW67";
 	private int rank = 0;
 	private MNode parent = null;
 	private MNode firstChild = null;
@@ -63,6 +63,36 @@ public class MNode {
 	}
 	public MNode getNextSibling() {
 		return this.nextSibling;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public void setParent(MNode parent) {
+		this.parent = parent;
+	}
+	public void setNextSibling(MNode nextSibling) {
+		this.nextSibling = nextSibling;
+	}
+	public void setFirstChild(MNode firstChild) {
+		this.firstChild = firstChild;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
 	}
 	public void linkFirstChild() {
 		//지금 노드의 rank-1 == 마지막arr원소의 rank 

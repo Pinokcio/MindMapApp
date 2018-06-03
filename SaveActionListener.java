@@ -11,11 +11,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class SaveActionListener implements ActionListener{
-// 1.파일 경로 불러와서 변수에 저장
-// 2.저장한 변수에 각 노드를 xml파일로 저장
 	public void actionPerformed(ActionEvent e) {
-		GetFilePath gfp = new GetFilePath();
-		if(gfp.returnFilePath()!=null)
-			new WriteXml(gfp);
+		if(OpenActionListener.gfp!=null) {
+			String[] revisedgfp = OpenActionListener.gfp.returnFilePath().split(".xml");
+			new WriteXml(revisedgfp[0]);	
+		}
+		else {
+			GetFilePath gfp = new GetFilePath();
+			if(gfp.returnFilePath()!=null)
+				new WriteXml(gfp.returnFilePath());
+		}
 	}
 }
