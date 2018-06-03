@@ -44,11 +44,12 @@ public class Frame extends JFrame{
 		openItem.addActionListener(new OpenActionListener());
 		saveItem.addActionListener(new SaveActionListener());
 		saveAsItem.addActionListener(new SaveAsActionListener());
+		applyItem.addActionListener(new ApplyActionListener());
+		closeItem.addActionListener(new CloseActionListener());
 		
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(closeItem);
-		
 		saveAndChangeMenu.add(saveItem);
 		saveAndChangeMenu.add(saveAsItem);
 		saveAndChangeMenu.add(applyItem);
@@ -64,22 +65,29 @@ public class Frame extends JFrame{
 		JToolBar toolBar = new JToolBar("Tool Bar");
 		toolBar.setFloatable(true);
 		
-		toolBar.add(new JButton("새로 만들기"));
-		toolBar.add(new JButton("열기"));
-		toolBar.add(new JButton("저장"));
-		toolBar.add(new JButton("다른 이름으로 저장"));
-		toolBar.add(new JButton("닫기"));
-		toolBar.add(new JButton("적용"));
-		toolBar.add(new JButton("변경"));
-
-		toolBar.addSeparator();
+		JButton newButton = new JButton("New");
+		JButton openButton = new JButton("Open");
+		JButton saveButton = new JButton("Save");
+		JButton saveAsButton = new JButton("SaveAs");
+		JButton closeButton = new JButton("Close");
+		JButton applyButton = new JButton("Apply");
+		JButton changeButton = new JButton("Change");
 		
-		JComboBox<String> combo = new JComboBox<String>();
-		combo.addItem("Java");
-		combo.addItem("C#");
-		combo.addItem("C");
-		combo.addItem("C++");
-		toolBar.add(combo);
+		toolBar.add(newButton);
+		toolBar.add(openButton);
+		toolBar.add(saveButton);
+		toolBar.add(saveAsButton);
+		toolBar.add(closeButton);
+		toolBar.add(applyButton);
+		toolBar.add(changeButton);
+		
+		openButton.addActionListener(new OpenActionListener());
+		saveButton.addActionListener(new SaveActionListener());
+		saveAsButton.addActionListener(new SaveAsActionListener());
+		applyButton.addActionListener(new ApplyActionListener());
+		closeButton.addActionListener(new CloseActionListener());
+		
+		toolBar.addSeparator();
 		
 		contentPane.add(toolBar, BorderLayout.NORTH);
 	}
@@ -89,7 +97,7 @@ public class Frame extends JFrame{
 
 		JButton apply = new JButton("적용");
 		apply.setBackground(Color.PINK);
-		apply.addMouseListener(new Apply());
+		apply.addActionListener(new ApplyActionListener());
 		subRootLeft.setBottomComponent(apply);
 		
 		//오른쪽

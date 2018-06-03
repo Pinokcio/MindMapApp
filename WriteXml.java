@@ -11,10 +11,10 @@ import java.io.File;
 	
 public class WriteXml 
 {
-	WriteXml(GetFilePath gfp){
+	WriteXml(String gfp){
 		try 
 		{
-			String[] gfpStr = gfp.returnFilePath().split("\\\\");
+			String[] gfpStr = gfp.split("\\\\");
 			String fileName = gfpStr[gfpStr.length-1];
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -26,7 +26,7 @@ public class WriteXml
 			
 			for(int i=0; i<MNode.nodeArray.size(); i++) 
 			{ 
-				Element node = doc.createElement("node"+(i+1));
+				Element node = doc.createElement("node");
 				filePathElmnt.appendChild(node);
 				
 				Element text = doc.createElement("text");
@@ -56,35 +56,15 @@ public class WriteXml
 				Element rank = doc.createElement("rank");
 				rank.appendChild(doc.createTextNode(Integer.toString((MNode.nodeArray.get(i).getRank()))));
 				node.appendChild(rank);
-				
-				Element parent = doc.createElement("parent");
-				if(MNode.nodeArray.get(i).getParent()!=null) {
-					parent.appendChild(doc.createTextNode((MNode.nodeArray.get(i).getParent().getText())));
-					node.appendChild(parent);
-				}
-				else {
-					parent.appendChild(doc.createTextNode(null));
-					node.appendChild(parent);
-				}
-				
-				Element nextSibling = doc.createElement("nextSibling");
-				if(MNode.nodeArray.get(i).getNextSibling()!=null) {
-					nextSibling.appendChild(doc.createTextNode((MNode.nodeArray.get(i).getNextSibling().getText())));
-					node.appendChild(nextSibling);
-				}
-				else {
-					nextSibling.appendChild(doc.createTextNode(null));
-					node.appendChild(nextSibling);	
-				}
 			}
-				TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				Transformer transformer = transformerFactory.newTransformer();
-				transformer.setOutputProperty(OutputKeys.ENCODING, "euc-KR");
-				transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-			
-				DOMSource source = new DOMSource(doc);
-				StreamResult result = new StreamResult(new File(gfp.returnFilePath()+".xml"));
-				transformer.transform(source, result);
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "euc-KR");
+			transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+		
+			DOMSource source = new DOMSource(doc);		
+			StreamResult result = new StreamResult(new File(gfp+".xml"));
+			transformer.transform(source, result);
 		}
 		catch (Exception e) 
 		{
