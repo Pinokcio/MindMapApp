@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.xml.soap.Text;
+
 import java.awt.*;
 
 public class Frame extends JFrame{
@@ -28,7 +30,8 @@ public class Frame extends JFrame{
 	public static JTextField hTF = new JTextField(20);
 	public static JTextField colorTF = new JTextField(20);
 
-	
+	private Font font = new Font("Arial", Font.PLAIN, 20);
+
 	public Frame() {
 		setTitle("프레임");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,6 +57,9 @@ public class Frame extends JFrame{
 		JMenuItem closeItem = new JMenuItem("Close");
 		JMenuItem applyItem = new JMenuItem("Apply");
 		JMenuItem changeItem = new JMenuItem("Change");
+		
+		fileMenu.setFont(font);
+		saveAndChangeMenu.setFont(font);
 		
 		openItem.addActionListener(new OpenActionListener());
 		saveItem.addActionListener(new SaveActionListener());
@@ -87,12 +93,26 @@ public class Frame extends JFrame{
 		JButton applyButton = new JButton("Apply");
 		JButton changeButton = new JButton("Change");
 		
+		newButton.setFont(font);
+		openButton.setFont(font);
+		saveButton.setFont(font);
+		saveAsButton.setFont(font);
+		closeButton.setFont(font);
+		applyButton.setFont(font);
+		changeButton.setFont(font);
+		
 		toolBar.add(newButton);
+		toolBar.addSeparator();
 		toolBar.add(openButton);
+		toolBar.addSeparator();
 		toolBar.add(saveButton);
+		toolBar.addSeparator();
 		toolBar.add(saveAsButton);
+		toolBar.addSeparator();
 		toolBar.add(closeButton);
+		toolBar.addSeparator();
 		toolBar.add(applyButton);
+		toolBar.addSeparator();
 		toolBar.add(changeButton);
 		
 		openButton.addActionListener(new OpenActionListener());
@@ -161,19 +181,46 @@ public class Frame extends JFrame{
 	}
 	public void drawAttribute() {
 		Font font = new Font("", Font.PLAIN, 20);
-		AttributePane.setLayout(new GridLayout(0, 2));
+		int attriPaneHeight = (frameHeight - 180);	//디바이더의 위치까지가 속성페인 높이
+		int vGap = (int)(attriPaneHeight / 6.5);				//레이블 사이의 수직 갭
+
+		AttributePane.setLayout(null);
 		JLabel textLB = new JLabel("TEXT : ");
 		JLabel xLB = new JLabel("X : ");
 		JLabel yLB = new JLabel("Y : ");
 		JLabel wLB = new JLabel("W : ");
 		JLabel hLB = new JLabel("H : ");
 		JLabel colorLB = new JLabel("Color : ");
+		
 		textLB.setFont(font);
-		xLB.setFont(font);;
+		textLB.setBounds(40, attriPaneHeight-6*vGap, 200, 50);
+		textTF.setFont(font);
+		textTF.setBounds(150, attriPaneHeight-6*vGap, 150, 50);
+		
+		xLB.setFont(font);
+		xLB.setBounds(40, attriPaneHeight-5*vGap, 200, 50);
+		xTF.setFont(font);
+		xTF.setBounds(150, attriPaneHeight-5*vGap, 150, 50);
+
 		yLB.setFont(font);
+		yLB.setBounds(40, attriPaneHeight-4*vGap, 200, 50);
+		yTF.setFont(font);
+		yTF.setBounds(150, attriPaneHeight-4*vGap, 150, 50);
+
 		wLB.setFont(font);
+		wLB.setBounds(40, attriPaneHeight-3*vGap, 200, 50);
+		wTF.setFont(font);
+		wTF.setBounds(150, attriPaneHeight-3*vGap, 150, 50);
+		
 		hLB.setFont(font);
+		hLB.setBounds(40, attriPaneHeight-2*vGap, 200, 50);
+		hTF.setFont(font);
+		hTF.setBounds(150, attriPaneHeight-2*vGap, 150, 50);
+		
 		colorLB.setFont(font);
+		colorLB.setBounds(40, attriPaneHeight-1*vGap, 200, 50);
+		colorTF.setFont(font);
+		colorTF.setBounds(150, attriPaneHeight-1*vGap, 150, 50);
 		
 		AttributePane.add(textLB);
 		textTF.setEditable(false);
