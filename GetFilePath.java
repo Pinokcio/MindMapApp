@@ -1,30 +1,35 @@
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.filechooser.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.util.ArrayList;
-import java.lang.StringBuffer;
 
 public class GetFilePath {
-	private JFileChooser chooser;
-	public String filePath;
-	GetFilePath(){
+	static private JFileChooser chooser;
+	private String filePath;
+	
+	GetFilePath(String type){
 		chooser = new JFileChooser();
 
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files","xml");
 		chooser.setFileFilter(filter);
 	
-		int returnVal = chooser.showSaveDialog(null);
+		int returnVal = 0;
+		if(type.equals("open"))
+			returnVal = chooser.showOpenDialog(null);
+		else if(type.equals("save"))
+			returnVal = chooser.showSaveDialog(null);
+		
 		if(returnVal != JFileChooser.APPROVE_OPTION) {
 			JOptionPane.showMessageDialog(null, "파일을 선택하지 않았습니다.","경고",JOptionPane.WARNING_MESSAGE);
+			filePath = null;
 			return;
-		}	
+		}
 		filePath = chooser.getSelectedFile().getPath();
 	}
 	public String returnFilePath() {
 		return filePath;
+	}
+	static public void setFilePath(File file) {
+		chooser.setSelectedFile(file);
 	}
 }
