@@ -57,7 +57,7 @@ public class WriteXml
 				node.appendChild(height);
 				
 				Element color = doc.createElement("color");
-				color.appendChild(doc.createTextNode((Integer.toString((MNode.nodeArray.get(i).getColor().getRGB())))));
+				color.appendChild(doc.createTextNode(MNode.nodeArray.get(i).getColor()));
 				node.appendChild(color);
 				
 				Element rank = doc.createElement("rank");
@@ -72,7 +72,7 @@ public class WriteXml
 			
 			File newFile = new File(gfp+".xml");
 			StreamResult result = new StreamResult(newFile);
-			OpenActionListener.gfp.setFilePath(newFile);
+			GetFilePath.setFilePath(newFile);
 			
 			transformer.transform(source, result);
 		}
@@ -82,4 +82,3 @@ public class WriteXml
 		}
 	}
 }
-

@@ -10,7 +10,7 @@ public class NewTextField implements ActionListener{
 		MNode.nodeArray.clear();
 		MNode.recentParent.clear();
 		OpenActionListener.gfp = null;
-		new Draw().drawLabel();
+		Draw.drawLabel();
 		Frame.pathLabel.setPathLabel(null);
 	}
 }

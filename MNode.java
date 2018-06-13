@@ -13,8 +13,9 @@ public class MNode extends JLabel{
 	private int x, y;
 	private int width = 60, height = 40;
 	private int centerX, centerY;
+	private Point right, left, up, down;
 	private String text;
-	private Color color = new Color(-1);
+	private Color color = new Color(0xffffff);
 	private int rank = 0;
 	private MNode parent = null;
 	private MNode firstChild = null;
@@ -35,6 +36,8 @@ public class MNode extends JLabel{
 			parent = null;
 			setX(Draw.mindPaneWidth-50);	//너비의 반절 빼기
 			setY(Draw.mindPaneHeight-30);	//높이의 반절 빼기
+			setCenterByVal();
+			set4Points();
 			if(!recentParent.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "TextField " + (num+1) + "번째 줄에서 오류가 발생하였습니다.\n파일당 RootNode는 하나만 존재할 수 있습니다.", "트리구조 검사기", JOptionPane.ERROR_MESSAGE);
 				errorCnt++;
@@ -84,11 +87,33 @@ public class MNode extends JLabel{
 	public int getCenterY() {
 		return this.centerY;
 	}
+	public Point getRight() {
+		return this.right;
+	}
+	public Point getLeft() {
+		return this.left;
+	}
+	public Point getUp() {
+		return this.up;
+	}
+	public Point getDown() {
+		return this.down;
+	}
 	public String getText() {
 		return this.text;
 	}
-	public Color getColor() {
-		return this.color;
+	public String getColor() {
+		String r = Integer.toHexString(this.color.getRed());
+		while(r.length()!=2)
+			r = "0" + r;
+		String g = Integer.toHexString(this.color.getGreen());
+		while(g.length()!=2)
+			g = "0" + g;
+		String b = Integer.toHexString(this.color.getBlue());
+		while(b.length()!=2)
+			b = "0" + b;
+		String rgb = r + g + b;
+		return rgb;
 	}
 	public int getRank() {
 		return this.rank;
@@ -111,7 +136,6 @@ public class MNode extends JLabel{
 	public static int getErrorCnt() {
 		return errorCnt;
 	}
-	
 	public void setX(int x) {
 		this.isSettedX = true;
 		this.x = x;
@@ -124,17 +148,40 @@ public class MNode extends JLabel{
 		this.text = text;
 	}
 	public void setWidth(int width) {
+		if(width < 30)
+			width = 30; //최소 크기 설정
 		this.width = width;
 	}
 	public void setHeight(int height) {
+		if(height < 30)
+			height = 30; // 최소 크기 설정
 		this.height = height;
 	}
 	public void setCenterByVal() {
-		this.centerX = (int)(this.x - (this.width/2.0));
-		this.centerY = (int)(this.y - (this.height/2.0));
+		this.centerX = (int)(this.x + (this.width/2.0));
+		this.centerY = (int)(this.y + (this.height/2.0));
 	}
-	public void setColor(int color) {
-		this.color = new Color(color);
+	public void set4Points() {
+		this.right = new Point(this.x + this.width, this.centerY);
+		this.left = new Point(this.x, this.centerY);
+		this.up = new Point(this.centerX, this.y);
+		this.down = new Point(this.centerX, this.y + this.height);
+	}
+	public void setColor(String colorStr) {
+		if(colorStr.length()>6) {
+			JOptionPane.showMessageDialog(null, "Color 설정 시 6자리 16진수 숫자를 입력해주세요.","숫자 입력 오류",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		try{
+			while(colorStr.length()!=6)
+				colorStr = "0"+colorStr;
+			this.color = new Color(
+					Integer.valueOf( colorStr.substring( 0, 2 ), 16 ),
+					Integer.valueOf( colorStr.substring( 2, 4 ), 16 ),
+			        Integer.valueOf( colorStr.substring( 4, 6 ), 16 ) );
+		}catch(IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(null, "Color 설정 시 6자리 16진수 숫자를 입력해주세요.","숫자 입력 오류",JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	public void setParent(MNode parent) {
 		this.parent = parent;
@@ -157,8 +204,6 @@ public class MNode extends JLabel{
 		this.label.setBorder(new LineBorder(Color.PINK, 5));
 		this.label.setBackground(this.color);
 		this.label.setOpaque(true);
-		//this.label.addMouseListener(new MouseActionListener());
-		//this.label.addMouseMotionListener(new MouseActionListener());
 	}
 	public void linkFirstChild() {
 		//지금 노드의 rank-1 == 마지막arr원소의 rank 
@@ -187,21 +232,4 @@ public class MNode extends JLabel{
 			}
 		}
 	}
-	//테스트용 출력함수
-	public static void print() {
-		for(int i = 0; i < nodeArray.size(); i++) {
-			System.out.println(nodeArray.get(i).getRank()+"순위 "+nodeArray.get(i).getText());
-			if(nodeArray.get(i).getParent() != null)
-				System.out.println("부모 : "+nodeArray.get(i).getParent().getText());
-			if(nodeArray.get(i).getFirstChild() != null)
-				System.out.println("첫자식 : "+nodeArray.get(i).getFirstChild().getText());
-			if(nodeArray.get(i).getNextSibling() != null)
-				System.out.println("다음형제 : "+nodeArray.get(i).getNextSibling().getText());
-			System.out.println("위치 : "+nodeArray.get(i).getX()+", "+nodeArray.get(i).getY());
-			System.out.println("-------------");
-			System.out.println("nodeArray.size() : "+ nodeArray.size());
-			System.out.println("isSetted : "+ nodeArray.get(i).isSetted());
-		}
-	}
-	
 }

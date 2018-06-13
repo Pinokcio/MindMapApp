@@ -12,7 +12,7 @@ public class PathLabel extends JLabel{
 		this.setBorder(new LineBorder(Color.ORANGE, 5));
 		this.setBackground(new Color(-1));
 		this.setOpaque(true);
-		this.setBounds(this.getSize().width+300,this.getSize().height,295,50); //label위치가 drawfield에 맞게 변하도록 수정 필요.
+		this.setBounds(0,0,295,50);
 	}
 	public void setPathLabel(String path) {
 		this.setText(path);

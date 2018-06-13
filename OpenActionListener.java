@@ -77,15 +77,14 @@ public class OpenActionListener implements ActionListener{
 					MNode.nodeArray.get(i).setY(Integer.parseInt(yNode.getNodeValue()));
 					MNode.nodeArray.get(i).setWidth(Integer.parseInt(widthNode.getNodeValue()));
 					MNode.nodeArray.get(i).setHeight(Integer.parseInt(heightNode.getNodeValue()));
-					MNode.nodeArray.get(i).setColor(Integer.parseInt(colorNode.getNodeValue()));
+					MNode.nodeArray.get(i).setColor(colorNode.getNodeValue());
 					MNode.nodeArray.get(i).setRank(Integer.parseInt(rankNode.getNodeValue()));
 				}
 			}	
-			new Draw().drawLabel();
+			Draw.drawLabel();
 			Frame.pathLabel.setPathLabel(gfp.returnFilePath());
 		}catch(Exception E) {
 			E.printStackTrace();
 		}
 	}
 }	
-

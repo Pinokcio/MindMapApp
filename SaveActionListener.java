@@ -18,8 +18,9 @@ public class SaveActionListener implements ActionListener{
 		if(OpenActionListener.gfp.returnFilePath()!=null)
 		{
 			new WriteXml(OpenActionListener.gfp.returnFilePath());
-			System.out.println(OpenActionListener.gfp.returnFilePath());
 			Frame.pathLabel.setPathLabel(OpenActionListener.gfp.returnFilePath()+".xml");
 		}
+		else
+			OpenActionListener.gfp = null;
 	}
 }

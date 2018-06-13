@@ -1,24 +1,28 @@
 import javax.swing.*;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Frame extends JFrame{
-
+	
 	private static Container contentPane;
 	public static JTextArea textField = new JTextArea();
-	public static JPanel drawField = new JPanel();
+	public static JPanel MindMapPane = new MindMapPane();
 	public static JPanel AttributePane = new JPanel();
 	
 	private static JSplitPane rootSplitPane = new JSplitPane();
 	private static JSplitPane subRootRight = new JSplitPane();
 	private static JSplitPane subRootLeft = new JSplitPane();
 	private static JScrollPane textScroll = new JScrollPane(textField);
-	private static JScrollPane mindScroll = new JScrollPane(drawField);
+	private static JScrollPane mindScroll = new JScrollPane(MindMapPane);
 	private static JSplitPane sub_subRootRight = new JSplitPane();
 	private static JScrollPane attributeScroll = new JScrollPane(AttributePane);
 	public static PathLabel pathLabel = new PathLabel();
 	
-	//Dimension size = this.getBounds().getSize();
 	public static int frameWidth = 1200;
 	public static int frameHeight = 800;
 	
@@ -30,9 +34,16 @@ public class Frame extends JFrame{
 	public static JTextField hTF = new JTextField(20);
 	public static JTextField colorTF = new JTextField(20);
 	
+	private boolean [] isKeyPressed = new boolean[4];
+	
 	private Font font = new Font("Arial", Font.PLAIN, 20);
 	
 	public Frame() {
+		isKeyPressed[0] = false;
+		isKeyPressed[1] = false;
+		isKeyPressed[2] = false;
+		isKeyPressed[3] = false;
+		
 		setTitle("MindMap");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(frameWidth, frameHeight);
@@ -40,9 +51,18 @@ public class Frame extends JFrame{
 		Menu();
 		ToolBar();
 		splitPane();
-		this.addComponentListener(new ResizeListener());
+		this.addComponentListener(new ResizeListener(this));
 		setLocationRelativeTo(null);
+		
+		MindMapPane.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				MindMapPane.setFocusable(true);
+				MindMapPane.requestFocus();
+			}
+		});
 		setVisible(true);
+		MindMapPane.setFocusable(true);
+		MindMapPane.requestFocus();
 	}
 
 	public void Menu() {
@@ -68,6 +88,7 @@ public class Frame extends JFrame{
 		saveAsItem.addActionListener(new SaveAsActionListener());
 		applyItem.addActionListener(new ApplyActionListener());
 		closeItem.addActionListener(new CloseActionListener());
+		changeItem.addActionListener(new ChangeActionListener());
 		
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
@@ -126,8 +147,45 @@ public class Frame extends JFrame{
 		saveAsButton.addActionListener(new SaveAsActionListener());
 		applyButton.addActionListener(new ApplyActionListener());
 		closeButton.addActionListener(new CloseActionListener());
+		changeButton.addActionListener(new ChangeActionListener());
 		searchButton.addActionListener(new NodeSearchActionListener());
-		
+		MindMapPane.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent ke) {
+				if(ke.getKeyCode() == KeyEvent.VK_CONTROL)
+					isKeyPressed[0] = true;
+				if(isKeyPressed[0])
+					if(ke.getKeyCode() == KeyEvent.VK_F)
+						isKeyPressed[1] = true;
+				if(isKeyPressed[0])
+					if(ke.getKeyCode() == KeyEvent.VK_S)
+						isKeyPressed[2] = true;
+				if(isKeyPressed[0])
+					if(ke.getKeyCode() == KeyEvent.VK_N)
+						isKeyPressed[3] = true;
+				ActionEvent e = null;
+				if(isKeyPressed[0] && isKeyPressed[1]) {
+					new NodeSearchActionListener().actionPerformed(e);
+					isKeyPressed[0] = false;
+					isKeyPressed[1] = false;
+					isKeyPressed[2] = false;
+					isKeyPressed[3] = false;
+				}
+				if(isKeyPressed[0] && isKeyPressed[2]) {
+					new SaveActionListener().actionPerformed(e);
+					isKeyPressed[0] = false;
+					isKeyPressed[1] = false;
+					isKeyPressed[2] = false;
+					isKeyPressed[3] = false;
+				}
+				if(isKeyPressed[0] && isKeyPressed[3]) {
+					new NewTextField().actionPerformed(e);
+					isKeyPressed[0] = false;
+					isKeyPressed[1] = false;
+					isKeyPressed[2] = false;
+					isKeyPressed[3] = false;
+				}
+			}
+		});
 		toolBar.addSeparator();
 		
 		contentPane.add(toolBar, BorderLayout.NORTH);
@@ -143,30 +201,29 @@ public class Frame extends JFrame{
 		apply.setBackground(Color.ORANGE);
 		apply.addActionListener(new ApplyActionListener());
 		subRootLeft.setBottomComponent(apply);
-		
 		//오른쪽
 		sub_subRootRight.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
-		AttributePane.setBackground(Color.WHITE);;
+		AttributePane.setBackground(Color.WHITE);
 		sub_subRootRight.setTopComponent(attributeScroll);
 		JButton change = new JButton("CHANGE");
+		change.addActionListener(new ChangeActionListener());
 		change.setFont(new Font("Arial", Font.BOLD, 20));
 		change.setBackground(Color.ORANGE);
 		sub_subRootRight.setBottomComponent(change);
 				
-		subRootRight.setRightComponent(sub_subRootRight);
 		sub_subRootRight.setDividerSize(0);
 		
 		rootSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		subRootRight.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		rootSplitPane.setDividerSize(0);
+		subRootRight.setDividerSize(0);
 		rootSplitPane.setRightComponent(subRootRight);
+		subRootRight.setRightComponent(sub_subRootRight);
 		subRootLeft.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		rootSplitPane.setLeftComponent(subRootLeft);
-		
-
 		//가운데
 		drawMind();
-		//locateDivider();
 		drawAttribute();
 
 		subRootLeft.setDividerSize(0);
@@ -174,11 +231,26 @@ public class Frame extends JFrame{
 		contentPane.add(rootSplitPane);
 	}
 	public static void drawMind() {
-		drawField.setLayout(null);
-		drawField.setBackground(Color.WHITE);
+		MindMapPane.setLayout(null);
+		MindMapPane.setBackground(Color.WHITE);
 		subRootRight.setLeftComponent(mindScroll);
-		drawField.add(pathLabel);
+		forPaneSize();
+		MindMapPane.add(pathLabel);
+		LabelMove labelMove = new LabelMove(MNode.nodeArray);
+		MindMapPane.addMouseListener(labelMove);
+		MindMapPane.addMouseMotionListener(labelMove);
+
 		locateDivider();
+	}
+	public static void forPaneSize() {
+		int maxX=0,maxY=0;
+		for(int i = 0 ; i < MNode.nodeArray.size(); i++) {
+			if(MNode.nodeArray.get(i).getX()+MNode.nodeArray.get(i).getWidth() > maxX)
+				maxX = MNode.nodeArray.get(i).getX()+MNode.nodeArray.get(i).getWidth()+30;
+			if(MNode.nodeArray.get(i).getY()+MNode.nodeArray.get(i).getHeight() > maxY)
+				maxY = MNode.nodeArray.get(i).getY()+MNode.nodeArray.get(i).getHeight()+30;
+		}
+		MindMapPane.setPreferredSize(new Dimension(maxX,maxY));
 	}
 	public static void locateDivider() {
 		subRootRight.setDividerLocation((int)(frameWidth*(2/4.0)));
@@ -192,6 +264,7 @@ public class Frame extends JFrame{
 		int vGap = (int)(attriPaneHeight / 6.5);				//레이블 사이의 수직 갭
 
 		AttributePane.setLayout(null);
+		AttributePane.setPreferredSize(new Dimension(330,100));
 		JLabel textLB = new JLabel("TEXT : ");
 		JLabel xLB = new JLabel("X : ");
 		JLabel yLB = new JLabel("Y : ");
@@ -242,6 +315,5 @@ public class Frame extends JFrame{
 		AttributePane.add(hTF);
 		AttributePane.add(colorLB);
 		AttributePane.add(colorTF);
-
 	}
 }

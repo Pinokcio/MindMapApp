@@ -21,9 +21,8 @@ public class ApplyActionListener implements ActionListener {
 				}
 			}
 			if(MNode.getErrorCnt()==0)
-				new Draw().drawLabel();;
+				Draw.drawLabel();
 			MNode.setErrorCnt(0);
-			MNode.print();
 		}
 	}
 	public void splitText() {
