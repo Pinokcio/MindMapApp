@@ -34,8 +34,8 @@ public class MNode extends JLabel{
 		}
 		if(rank == 0) {
 			parent = null;
-			setX(Draw.mindPaneWidth-50);	//너비의 반절 빼기
-			setY(Draw.mindPaneHeight-30);	//높이의 반절 빼기
+			setX(Draw.mindPaneWidth-width/2);	//너비의 반절 빼기
+			setY(Draw.mindPaneHeight-height/2);	//높이의 반절 빼기
 			setCenterByVal();
 			set4Points();
 			if(!recentParent.isEmpty()) {
