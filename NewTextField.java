@@ -12,5 +12,6 @@ public class NewTextField implements ActionListener{
 		OpenActionListener.gfp = null;
 		Draw.drawLabel();
 		Frame.pathLabel.setPathLabel(null);
+		Frame.pathLabel.setBounds(0, 0, 0, 50);
 	}
 }

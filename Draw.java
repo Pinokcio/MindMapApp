@@ -10,7 +10,7 @@ public class Draw extends JComponent {
 		for(int i = 0; i < MNode.nodeArray.size(); i++) {
 			MNode.nodeArray.get(i).setLabel();
 			if(!MNode.nodeArray.get(i).isSetted()) {
-				setPosition(i); // x, y 좌표가 설정되어있지 않을 경우 필드에 그리기 전에 좌표 설정해줌.
+				setPosition(i); // x, y 좌표가 설정되어있지 않을 경우 필드에 그리기 전에 좌표 설정해줌. 
 			}
 			drawLabelBounds(MNode.nodeArray.get(i));
 		}

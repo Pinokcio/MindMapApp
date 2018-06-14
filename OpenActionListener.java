@@ -83,6 +83,8 @@ public class OpenActionListener implements ActionListener{
 			}	
 			Draw.drawLabel();
 			Frame.pathLabel.setPathLabel(gfp.returnFilePath());
+			if(OpenActionListener.gfp!=null)
+				Frame.pathLabel.setBounds(0, 0, gfp.returnFilePath().length()*10, 50);
 		}catch(Exception E) {
 			E.printStackTrace();
 		}

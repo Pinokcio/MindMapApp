@@ -9,10 +9,10 @@ public class PathLabel extends JLabel{
 		this.setText(null);
 		this.setFont(new Font("", Font.BOLD, 15));
 		this.setHorizontalAlignment(JLabel.CENTER);
-		this.setBorder(new LineBorder(Color.ORANGE, 5));
+		this.setBorder(new LineBorder(Color.BLACK, 5));
 		this.setBackground(new Color(-1));
 		this.setOpaque(true);
-		this.setBounds(0,0,295,50);
+		this.setBounds(0,0,0,50);
 	}
 	public void setPathLabel(String path) {
 		this.setText(path);
